@@ -70,7 +70,7 @@ export function makeChess() {
   });
   pieces.forEach((p, k) => p.delay = ((p.sq0[1] < 4 ? p.sq0[1] * 8 + p.sq0[0] : (7 - p.sq0[1]) * 8 + p.sq0[0]) / 32) * 2 * BAR * .9 + (p.sq0[1] < 4 ? 0 : .15));
 
-  const setAspect = a => fitFov(camera, a, 33);
+  const setAspect = a => fitFov(camera, a, 33, .75);
   return {
     scene, camera, setAspect,
     update(t) {

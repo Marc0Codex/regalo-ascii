@@ -99,7 +99,7 @@ export function makeFlowers() {
   }
   fl.forEach(f => f.o.scale.setScalar(0));
 
-  const setAspect = a => fitFov(camera, a, 38, 1);
+  const setAspect = a => fitFov(camera, a, 38, .75);
   return {
     scene, camera, setAspect,
     update(t) {

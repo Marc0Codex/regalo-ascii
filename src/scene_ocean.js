@@ -76,7 +76,7 @@ export function makeOcean() {
   const jellies = defs.map(([c, s, r, cx, cz, y, dir, ph], i) => {
     const j = makeJelly(c, s, 11 + i); scene.add(j.g); return { j, r, cx, cz, y, dir, ph };
   });
-  const setAspect = a => fitFov(camera, a, 50);
+  const setAspect = a => fitFov(camera, a, 50, .5);
   return {
     scene, camera, setAspect,
     update(t) {
