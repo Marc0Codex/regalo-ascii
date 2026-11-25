@@ -1,5 +1,5 @@
 import * as THREE from '../vendor/three.module.js';
-import { C, toon, addLights, fitFov } from './palette.js';
+import { C, toon, addLights, shadows, fitFov } from './palette.js';
 import { clamp, easeOutBack, rng } from './util.js';
 import { LOOP } from './audio.js';
 
@@ -56,7 +56,7 @@ function daisy() {
 const leaf = () => { const m = new THREE.Mesh(GEO.leaf, toon(C.salvia, { side: THREE.DoubleSide })); m.rotation.x = -.35; const g = new THREE.Group(); g.add(m); return g; };
 
 export function makeFlowers() {
-  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(38, 1.7, .1, 100); addLights(scene);
+  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(38, 1.7, .1, 100); addLights(scene, 6, [3, 10, 7]);
   const R = rng(5), root = new THREE.Group(); scene.add(root);
   // florero + lazo + plato
   const vaseMat = toon(C.lila, { side: THREE.DoubleSide });
@@ -98,6 +98,7 @@ export function makeFlowers() {
     o.rotation.order = 'YXZ'; bq.add(o); fl.push({ o, sc: new THREE.Vector3(1, 1, 1).multiplyScalar(1.1), delay: .6 + R() });
   }
   fl.forEach(f => f.o.scale.setScalar(0));
+  shadows(scene);
 
   const setAspect = a => fitFov(camera, a, 38, .75);
   return {

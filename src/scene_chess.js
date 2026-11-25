@@ -1,5 +1,5 @@
 import * as THREE from '../vendor/three.module.js';
-import { C, toon, addLights, fitFov } from './palette.js';
+import { C, toon, addLights, shadows, fitFov } from './palette.js';
 import { clamp, lerp, ease, easeInOut, easeOutBack, easeOutCubic } from './util.js';
 import { LOOP, BAR } from './audio.js';
 
@@ -41,7 +41,7 @@ function makePiece(type, mat, face) {
 
 export function makeChess() {
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(33, 1.7, .05, 100);
-  addLights(scene);
+  addLights(scene, 8, [-6, 13, 5]);
   const board = new THREE.Group(); scene.add(board);
   const sqs = new THREE.InstancedMesh(box(.96, .2, .96), toon(0xffffff), 64);
   const d = new THREE.Object3D(), col = new THREE.Color();
@@ -70,6 +70,7 @@ export function makeChess() {
   });
   pieces.forEach((p, k) => p.delay = ((p.sq0[1] < 4 ? p.sq0[1] * 8 + p.sq0[0] : (7 - p.sq0[1]) * 8 + p.sq0[0]) / 32) * 2 * BAR * .9 + (p.sq0[1] < 4 ? 0 : .15));
 
+  shadows(scene);
   const setAspect = a => fitFov(camera, a, 33, .75);
   return {
     scene, camera, setAspect,

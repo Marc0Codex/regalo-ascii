@@ -12,6 +12,7 @@ export class Ascii {
     this.canvas = canvas; this.ctx = canvas.getContext('2d');
     this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
     this.renderer.setClearColor(0x000000, 0);
+    this.renderer.shadowMap.enabled = true; this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.S = 3;
     this.resize();
   }
@@ -20,7 +21,7 @@ export class Ascii {
     const dpr = Math.min(window.devicePixelRatio || 1, 2), W = innerWidth, H = innerHeight;
     const c = this.canvas; c.width = W * dpr; c.height = H * dpr; c.style.width = W + 'px'; c.style.height = H + 'px';
     const ctx = this.ctx; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const fs = clamp(Math.min(W / 90, H / 70), 7, 14);
+    const fs = clamp(Math.min(W / 105, H / 80), 6.5, 13);
     this.font = `700 ${fs}px ui-monospace,"Cascadia Mono",Menlo,Consolas,"Courier New",monospace`;
     ctx.font = this.font;
     this.cw = ctx.measureText('M').width; this.ch = Math.round(fs * 1.2); this.dpr = dpr;
@@ -67,7 +68,7 @@ export class Ascii {
       const i = y * cols + x, a0 = fa[i];
       if (a0 < 0.12) { gl[i] = -1; continue; }
       const r = fr[i], g = fg[i], bb = fb[i], L = 0.299 * r + 0.587 * g + 0.114 * bb, m = Math.max(r, g, bb, 0.001);
-      let glyph = 1 + Math.floor(clamp(L * 1.1) * 10.99), k = clamp(0.5 + L * 0.9);
+      let glyph = 1 + Math.floor(clamp(L * 1.1) * 10.99), k = clamp(0.38 + L * 1.05);
       if (a0 < 0.88) { // contorno de siluetas
         const l = x > 0 ? fa[i - 1] : 0, rr = x < cols - 1 ? fa[i + 1] : 0, u = y > 0 ? fa[i - cols] : 0, d = y < rows - 1 ? fa[i + cols] : 0;
         const gx = rr - l, gy = d - u;
